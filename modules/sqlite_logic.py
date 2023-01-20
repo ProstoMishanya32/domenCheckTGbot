@@ -46,6 +46,10 @@ def get_data(url):
     google = cur.execute("SELECT google FROM url WHERE url = ?", (url,)).fetchall()
     return status[0], steam[0], google[0]
 
+def get_domens():
+    status = cur.execute("SELECT id, url FROM url").fetchall()
+    return status
+
 def get_url():
     url = cur.execute("SELECT url FROM url").fetchall()
     return url

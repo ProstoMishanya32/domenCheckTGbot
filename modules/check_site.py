@@ -21,7 +21,7 @@ def check_site(url, params = HEADERS):
 		response = False
 		return response
 
-async def check_steam(url, params = HEADERS):
+async def check_steam(url, message, params = HEADERS, ):
 	try:
 		sqlite_logic.add_url(url) #Добавление в БД новую запись, если существует - игнор
 		if "http:/" in url or "https:/" in url: #Повторная проверка
@@ -34,17 +34,17 @@ async def check_steam(url, params = HEADERS):
 		soup = BeautifulSoup(response.text, 'lxml').find('h1') #Поиск заголовка
 		if "Link Blocked!" == soup.text : # Заблокирована ль ссылка
 			sqlite_logic.update_steam(url, 1)  # Steam Заблокировкал Статус 1 в БД
-			await check_google(url)
+			await check_google(url, message)
 		else:
 			sqlite_logic.update_steam(url, 0) # Блокировки в Steam нет
-			await check_google(url)
+			await check_google(url, message)
 	except Exception as i:
 		print(i)
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
 
 
-async def check_google(url):
+async def check_google(url, message):
 	try:
 		if "http:/" in url or "https:/" in url:  # Повторная проверка
 			url_check = url
@@ -82,7 +82,11 @@ async def check_google(url):
 			google = "Блокировка в Google ❌"
 		else:
 			google = "Не заблокирован в Google ✅"
-		await bot.send_message(config.bot.admin, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>", parse_mode=types.ParseMode.HTML)
+		if message == None:
+			for i in config.bot.admin_list:
+				await bot.send_message(i, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>", parse_mode=types.ParseMode.HTML)
+		else:
+			await bot.send_message(message.from_user.id, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>",   parse_mode=types.ParseMode.HTML)
 	except Exception as i:
 		print(i)
 
@@ -93,4 +97,4 @@ async def startup():
 		url = sqlite_logic.get_url()
 		for i in url:
 			url = i[0]
-			await check_steam(url)
+			await check_steam(url, None)
