@@ -53,3 +53,12 @@ def get_domens():
 def get_url():
     url = cur.execute("SELECT url FROM url").fetchall()
     return url
+
+def delete_domen(id):
+    result = cur.execute("SELECT url FROM url WHERE id = ?", (id,)).fetchall()
+    if len(result) == 0:
+        return False
+    else:
+        cur.execute("DELETE FROM url WHERE id = ?", (id,))
+        base.commit()
+        return True

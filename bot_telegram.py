@@ -2,7 +2,7 @@ import aiogram
 from create_bot import dp, bot
 from aiogram import executor
 import asyncio
-from handlers import user, domen
+from handlers import user, domen, admin
 from modules import sqlite_logic, check_site
 
 async def on_startup(_):
@@ -13,7 +13,7 @@ async def on_startup(_):
 
 user.registry_handlers_user(dp)
 domen.registry_handlers_domen(dp)
-
+admin.registry_handlers_admin(dp)
 
 if __name__  == '__main__':
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import lxml
-from modules import sqlite_logic, config
+from modules import sqlite_logic, config, json_logic
 import aiogram
 from aiogram import Dispatcher, types
 from create_bot import dp, bot
@@ -83,7 +83,8 @@ async def check_google(url, message):
 		else:
 			google = "Не заблокирован в Google ✅"
 		if message == None:
-			for i in config.bot.admin_list:
+			admins = await json_logic.get_admins()
+			for i in admins:
 				await bot.send_message(i, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>", parse_mode=types.ParseMode.HTML)
 		else:
 			await bot.send_message(message.from_user.id, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>",   parse_mode=types.ParseMode.HTML)
@@ -93,7 +94,8 @@ async def check_google(url, message):
 
 async def startup():
 	while True:
-		await asyncio.sleep(config.bot.while_time)
+		time = json_logic.get_time()
+		await asyncio.sleep(time)
 		url = sqlite_logic.get_url()
 		for i in url:
 			url = i[0]

@@ -9,3 +9,6 @@ button_admin_menu = ReplyKeyboardMarkup(resize_keyboard = True, one_time_keyboar
 	config.buttons.add_admin)).insert(KeyboardButton(
 	config.buttons.remove_admin)).add(KeyboardButton(
 	config.buttons.exit))
+
+button_admin_return = ReplyKeyboardMarkup(resize_keyboard = True, one_time_keyboard = True).add(KeyboardButton(
+	config.buttons.return_back))
