@@ -3,12 +3,16 @@
     "bot": {
         "token": "5806912955:AAFXRo0WKCnk00DgzjYoOrpUN9r-TrWgStI",
         "while_true": [
-            600
+            1200
         ],
         "admin_list": [
             {
                 "user_id": 5689929885,
                 "nickname": "Michail"
+            },
+            {
+                "user_id": 389792468,
+                "nickname": "华商周柏豪"
             }
         ]
     },

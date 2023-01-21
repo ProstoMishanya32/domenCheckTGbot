@@ -5,7 +5,6 @@ import json
 def change_time(time_):
     with open('./configs/config.json', 'r', encoding='utf-8') as f:
         admins = json.load(f)
-    print(admins['bot']['while_true'])
     admins['bot']['while_true'].remove(admins['bot']['while_true'][0])
     admins['bot']['while_true'].append( (time_ * 60) )
     result = True
@@ -17,12 +16,6 @@ def get_time():
     with open('./configs/config.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     return data['bot']['while_true'][0]
-
-
-
-
-
-
 
 
 async def add_admin(user_id, nickname):
