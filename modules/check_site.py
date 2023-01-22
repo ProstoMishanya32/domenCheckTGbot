@@ -22,10 +22,12 @@ HEADERS = {
     '1'
 }
 
-
+PROXY = {
+	"HTTP":"http://YrbVEw:QWcSX3R268@194.32.229.160:1050"
+}
 def check_site(url, params = HEADERS):
 	try:
-		response = requests.get(url, headers=HEADERS)
+		response = requests.get(url, headers=HEADERS, proxies = PROXY)
 		return  response
 	except requests.exceptions.ConnectionError: #Не подключился
 		response = False
@@ -74,6 +76,7 @@ async def check_google(url, message):
 			if "ничего не найдено." in soup.text: # Банальная проверка
 				sqlite_logic.update_google(url, 1) # Заблокирован
 			else:
+				sqlite_logic.update_active(message.text) #ВРЕМЕННОЕ РЕШЕНИЕ
 				sqlite_logic.update_google(url, 0) #Бана нет
 		else:
 			sqlite_logic.update_google(url, 0) #На случай если блоканет запрос

@@ -39,6 +39,10 @@ def update_notactive(url):
     else:
         cur.execute("UPDATE url  SET (status) = ? WHERE url = ?", (1, url))
         base.commit()
+def update_active(url):
+    cur.execute("UPDATE url  SET (status) = ? WHERE url = ?", (None, url))
+    base.commit()
+
 
 def get_data(url):
     status = cur.execute("SELECT status FROM url WHERE url = ?", (url,)).fetchall()
