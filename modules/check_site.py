@@ -76,7 +76,10 @@ async def check_google(url, message):
 			if "ничего не найдено." in soup.text: # Банальная проверка
 				sqlite_logic.update_google(url, 1) # Заблокирован
 			else:
-				sqlite_logic.update_active(message.text) #ВРЕМЕННОЕ РЕШЕНИЕ
+				if message == None:
+					pass
+				else:
+					sqlite_logic.update_active(message.text) #ВРЕМЕННОЕ РЕШЕНИЕ
 				sqlite_logic.update_google(url, 0) #Бана нет
 		else:
 			sqlite_logic.update_google(url, 0) #На случай если блоканет запрос
@@ -98,7 +101,10 @@ async def check_google(url, message):
 		if message == None:
 			admins = await json_logic.get_admins()
 			for i in admins:
-				await bot.send_message(i, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>", parse_mode=types.ParseMode.HTML)
+				try:
+					await bot.send_message(i, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>", parse_mode=types.ParseMode.HTML)
+				except Exception as i:
+					pass
 		else:
 			await bot.send_message(message.from_user.id, f"Сайт - <b>{url}</b> На данный момент: <i>\n{status}\n{steam}\n{google}\n</i>",   parse_mode=types.ParseMode.HTML)
 	except Exception as i:
@@ -106,6 +112,7 @@ async def check_google(url, message):
 
 
 async def startup():
+	print('Запуск')
 	while True:
 		time = json_logic.get_time()
 		await asyncio.sleep(time)

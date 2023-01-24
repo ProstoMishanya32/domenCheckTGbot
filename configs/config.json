@@ -3,7 +3,7 @@
     "bot": {
         "token": "5806912955:AAFXRo0WKCnk00DgzjYoOrpUN9r-TrWgStI",
         "while_true": [
-            1200
+            10
         ],
         "admin_list": [
             {
